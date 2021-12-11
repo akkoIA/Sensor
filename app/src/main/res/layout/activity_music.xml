@@ -19,6 +19,7 @@
         app:srcCompat="@drawable/ic_check_black_24dp" />
 
     <RadioGroup
+        android:id="@+id/RadioGroup"
         android:layout_width="300dp"
         android:layout_height="300dp"
         app:layout_constraintBottom_toTopOf="@+id/floatingActionButton4"
