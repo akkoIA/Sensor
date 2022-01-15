@@ -1,43 +1,58 @@
 package com.example.sensor
 
+import android.content.Context
+import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import kotlinx.android.synthetic.main.activity_music.*
 
 class MusicActivity : AppCompatActivity() {
 
-    val radioButton1=RadioButton(this)
-    val radioButton2=RadioButton(this)
-    val radioButton3=RadioButton(this)
-
-    val radioGroup=RadioGroup(this)
-
-    val linearLayout=findViewById<LinearLayout>(R.id.RadioGroup)
-
-    val radioButton=findViewById<RadioButton>(R.id.radioButton)
-
-    val id=radioGroup.checkedRadioButtonId
+    var sound1: MediaPlayer? = null
+    var sound2: MediaPlayer? = null
+    var sound3: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_music)
 
-        radioButton1.text="音源1"
-        radioButton2.text="音源2"
-        radioButton3.text="音源3"
+        val radioGroup=findViewById<RadioGroup>(R.id.RadioGroup)
 
-        radioGroup.addView(radioButton1)
-        radioGroup.addView(radioButton2)
-        radioGroup.addView(radioButton3)
+        val radioButton1=findViewById<RadioButton>(R.id.radioButton)
+        val radioButton2=findViewById<RadioButton>(R.id.radioButton2)
+        val radioButton3=findViewById<RadioButton>(R.id.radioButton3)
 
-        linearLayout.addView(radioGroup)
+        sound1=MediaPlayer.create(this,R.raw.doamusic)
+        sound2=MediaPlayer.create(this,R.raw.siren)
+        sound3=MediaPlayer.create(this,R.raw.god)
 
-        //最初に指定されているボタンの設定
-        radioButton.isChecked=true
 
-        //選択されているボタンのIDの取得
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId){
+                R.id.radioButton -> sound1?.start()
+                R.id.radioButton2 -> sound2?.start()
+                R.id.radioButton3 -> sound3?.start()
+            }
+        }
+
+        floatingActionButton4.setOnClickListener{
+            val sharedPref = getSharedPreferences("sound", Context.MODE_PRIVATE)
+            val temp = when(radioGroup.checkedRadioButtonId){
+                R.id.radioButton ->"sound1"
+                R.id.radioButton2 ->"sound2"
+                R.id.radioButton3 ->"sound3"
+                else -> "sound1"
+            }
+
+            sharedPref.edit().putString("sound", temp).apply()
+
+            finish()
+        }
+
 
     }
 }

@@ -1,6 +1,7 @@
 package com.example.sensor
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.*
 import android.media.MediaParser
 import android.media.MediaPlayer
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.absoluteValue
@@ -24,15 +26,26 @@ class MainActivity : AppCompatActivity(),SensorEventListener{
     var defaultY = 0f
     var defaultZ = 0f
 
-    var sound:MediaPlayer? = null
+    var sound1: MediaPlayer? = null
+    var sound2: MediaPlayer? = null
+    var sound3: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sound = MediaPlayer.create(this,R.raw.doamusic)
+        sound1=MediaPlayer.create(this,R.raw.doamusic)
+        sound2=MediaPlayer.create(this,R.raw.siren)
+        sound3=MediaPlayer.create(this,R.raw.god)
 
         val text2=findViewById<TextView>(R.id.timer)
+
+        val imageview =findViewById<ImageView>(R.id.imageView)
+
+        imageview.setOnClickListener{
+            val intent=Intent(this,MusicActivity::class.java)
+            startActivity(intent)
+        }
 
         val timer=object :CountDownTimer(10000,100){
             override fun onTick(p0: Long) {
@@ -101,7 +114,15 @@ class MainActivity : AppCompatActivity(),SensorEventListener{
 
             if(judX || judY || judZ){
                 //音を鳴らす
-                sound?.start()
+                val sharedPref = getSharedPreferences("sound", Context.MODE_PRIVATE)
+                val sound=sharedPref.getString("sound","sound1")
+
+                when(sound){
+                    "sound1" -> sound1?.start()
+                    "sound2" -> sound2?.start()
+                    "sound3" -> sound3?.start()
+                    else -> sound1?.start()
+                }
             }
 
         }
