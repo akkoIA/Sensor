@@ -32,21 +32,21 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:checked="true"
-            android:text="音源1"
+            android:text="ドアベル"
             android:textSize="30sp" />
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:text="音源2"
+            android:text="サイレン"
             android:textSize="30sp" />
 
         <RadioButton
             android:id="@+id/radioButton3"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:text="音源3"
+            android:text="神"
             android:textSize="30sp" />
     </RadioGroup>
 
