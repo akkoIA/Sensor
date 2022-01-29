@@ -1,5 +1,7 @@
 package com.example.sensor
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -10,6 +12,7 @@ import android.hardware.SensorManager
 import android.media.MediaPlayer
 import android.os.CountDownTimer
 import android.os.IBinder
+import android.util.Log
 import android.view.View
 import androidx.core.app.NotificationCompat
 import kotlinx.android.synthetic.main.activity_main.*
@@ -44,9 +47,31 @@ class SoundService : Service(), SensorEventListener {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val name = "ドアベル起動中"
+        val id = "doabell_foreground"
+        val notifyDescription = "ドアベル起動中"
+
+        if (manager.getNotificationChannel(id) == null) {
+            val mChannel = NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH)
+            mChannel.apply {
+                description = notifyDescription
+            }
+            manager.createNotificationChannel(mChannel)
+        }
+
+        val notification = NotificationCompat.Builder(this,id)
+            .setContentTitle("ドアベル起動中")
+            .setContentText("ドアベル起動中")
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .build()
+        startForeground(1, notification)
+
         mManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         //その他のセンサーを取得する場合には引数を違うものに変更する
         mSensor = mManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+        mManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL)
 
         isStart = true
 
@@ -54,12 +79,8 @@ class SoundService : Service(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        val notification = NotificationCompat.Builder(this,"doabell")
-            .setContentTitle("ドアベル起動中")
-            .setContentText("ドアベル起動中")
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .build()
-        startForeground(1, notification)
+        Log.d("A","onsensorchanged")
+
 
         if(isStart){
             defaultX = event?.values?.get(0)?.absoluteValue ?: 0f
@@ -79,6 +100,7 @@ class SoundService : Service(), SensorEventListener {
 
             if(judX || judY || judZ){
                 //音を鳴らす
+                Log.d("A","sound")
                 val sharedPref = getSharedPreferences("sound", Context.MODE_PRIVATE)
                 val sound=sharedPref.getString("sound","sound1")
 

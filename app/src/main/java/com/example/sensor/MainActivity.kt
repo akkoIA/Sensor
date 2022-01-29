@@ -54,8 +54,7 @@ class MainActivity : AppCompatActivity(){
 
             override fun onFinish() {
                 text2.text="実行中"
-                buttonStart.visibility=View.GONE
-                buttonStop.visibility=View.VISIBLE
+                buttonStart.isClickable=true
                 buttonStop.isClickable=true
 
                 val intent = Intent(applicationContext, SoundService::class.java)
@@ -71,9 +70,7 @@ class MainActivity : AppCompatActivity(){
         }
 
         buttonStop.setOnClickListener{
-            buttonStart.visibility=View.VISIBLE
-            buttonStart.isClickable=true
-            buttonStop.visibility= View.GONE
+
 
             isWorking=false
             text2.text="待機中"
