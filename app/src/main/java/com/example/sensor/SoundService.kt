@@ -11,6 +11,7 @@ import android.media.MediaPlayer
 import android.os.CountDownTimer
 import android.os.IBinder
 import android.view.View
+import androidx.core.app.NotificationCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.absoluteValue
 import kotlin.properties.Delegates
@@ -53,7 +54,12 @@ class SoundService : Service(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        startForeground()
+        val notification = NotificationCompat.Builder(this,"doabell")
+            .setContentTitle("ドアベル起動中")
+            .setContentText("ドアベル起動中")
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .build()
+        startForeground(1, notification)
 
         if(isStart){
             defaultX = event?.values?.get(0)?.absoluteValue ?: 0f
