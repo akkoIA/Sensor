@@ -1,4 +1,4 @@
-package com.example.sensor
+package com.example2.sensor
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,12 +10,9 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.media.MediaPlayer
-import android.os.CountDownTimer
 import android.os.IBinder
 import android.util.Log
-import android.view.View
 import androidx.core.app.NotificationCompat
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.absoluteValue
 import kotlin.properties.Delegates
 

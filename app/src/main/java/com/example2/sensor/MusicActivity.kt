@@ -1,11 +1,9 @@
-package com.example.sensor
+package com.example2.sensor
 
 import android.content.Context
-import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import kotlinx.android.synthetic.main.activity_music.*

@@ -1,4 +1,4 @@
-package com.example.sensor
+package com.example2.sensor
 
 import org.junit.Test
 
